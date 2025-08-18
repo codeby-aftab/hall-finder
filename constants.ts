@@ -5,6 +5,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 1,
     name: 'The Royal Palace',
+    address: '123 Main Gulberg Blvd, Gulberg III',
     area: 'Gulberg',
     city: 'Lahore',
     venueType: 'Palace',
@@ -22,6 +23,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 2,
     name: 'Oceanview Banquet',
+    address: 'D-8, Block 4, Clifton',
     area: 'Clifton',
     city: 'Karachi',
     venueType: 'Destination',
@@ -39,6 +41,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 3,
     name: 'Margalla Greens',
+    address: 'Street 5, Sector E-11/4',
     area: 'E-11',
     city: 'Islamabad',
     venueType: 'Outdoor',
@@ -56,6 +59,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 4,
     name: 'The Grand Ballroom',
+    address: 'Sector Y, Phase 3, DHA',
     area: 'DHA',
     city: 'Lahore',
     venueType: 'Banquet',
@@ -73,6 +77,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 5,
     name: 'Crystal Marquee',
+    address: 'Plot 7, Street 1, F-10/3',
     area: 'F-10',
     city: 'Islamabad',
     venueType: 'Marquee',
@@ -90,6 +95,7 @@ export const MOCK_HALLS: WeddingHall[] = [
    {
     id: 6,
     name: 'Shehnai Banquet Hall',
+    address: 'Block L, North Nazimabad Town',
     area: 'North Nazimabad',
     city: 'Karachi',
     venueType: 'Banquet',
@@ -107,6 +113,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 7,
     name: 'The Pearl Continental Marquee',
+    address: 'Shahrah-e-Quaid-e-Azam, Mall Road',
     area: 'Mall Road',
     city: 'Lahore',
     venueType: 'Marquee',
@@ -124,6 +131,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 8,
     name: 'Serena Hotel Gardens',
+    address: 'Khayaban-e-Suhrwardy, G-5/1',
     area: 'Khayaban-e-Suhrwardy',
     city: 'Islamabad',
     venueType: 'Outdoor',
@@ -140,6 +148,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 9,
     name: 'Movenpick Grand Ballroom',
+    address: 'Club Rd, Civil Lines',
     area: 'Club Road',
     city: 'Karachi',
     venueType: 'Banquet',
@@ -156,6 +165,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 10,
     name: 'Nishat Hotel Emporium',
+    address: 'Abdul Haque Rd, Johar Town',
     area: 'Johar Town',
     city: 'Lahore',
     venueType: 'Palace',
@@ -172,6 +182,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 11,
     name: 'Blue Lagoon Resort',
+    address: 'Hawks Bay Rd, Mauripur',
     area: 'Hawksbay',
     city: 'Karachi',
     venueType: 'Destination',
@@ -188,6 +199,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 12,
     name: 'Avari Towers Poolside',
+    address: '242-244 Fatima Jinnah Rd, Civil Lines',
     area: 'Fatima Jinnah Road',
     city: 'Karachi',
     venueType: 'Outdoor',
@@ -204,6 +216,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 13,
     name: 'The Tulip Venue',
+    address: '12-Z, Commercial, Phase 5, DHA',
     area: 'DHA Phase 5',
     city: 'Lahore',
     venueType: 'Banquet',
@@ -220,6 +233,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 14,
     name: 'Saidpur Village Courtyard',
+    address: 'Saidpur Village Rd, Saidpur',
     area: 'Saidpur Village',
     city: 'Islamabad',
     venueType: 'Outdoor',
@@ -236,6 +250,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 15,
     name: 'Royal Palm Golf & Country Club',
+    address: '52 Canal Bank Rd, Mughalpura',
     area: 'Canal Bank Road',
     city: 'Lahore',
     venueType: 'Outdoor',
@@ -252,6 +267,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 16,
     name: 'Garrison Golf & Country Club',
+    address: 'Tufail Road, Lahore Cantt',
     area: 'Cantt',
     city: 'Lahore',
     venueType: 'Marquee',
@@ -268,6 +284,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 17,
     name: 'Ambassador Hotel',
+    address: '74 Davis Rd, Basti Nau',
     area: 'Davis Road',
     city: 'Lahore',
     venueType: 'Banquet',
@@ -284,6 +301,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 18,
     name: 'Dreamworld Resort',
+    address: 'Adjacent Block R, Gulshan-e-Maymar',
     area: 'Super Highway',
     city: 'Karachi',
     venueType: 'Destination',
@@ -300,6 +318,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 19,
     name: 'PAF Museum Lawns',
+    address: 'PAF Faisal Air Base, Shahrah-e-Faisal',
     area: 'Shahrah-e-Faisal',
     city: 'Karachi',
     venueType: 'Outdoor',
@@ -316,6 +335,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 20,
     name: 'The Venue',
+    address: 'College Rd, F-6 Markaz',
     area: 'F-6 Markaz',
     city: 'Islamabad',
     venueType: 'Banquet',
@@ -332,6 +352,7 @@ export const MOCK_HALLS: WeddingHall[] = [
   {
     id: 21,
     name: 'Monal Restaurant',
+    address: 'Pir Sohawa Rd, Islamabad',
     area: 'Pir Sohawa',
     city: 'Islamabad',
     venueType: 'Destination',

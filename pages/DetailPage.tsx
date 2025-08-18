@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import type { WeddingHall, SetView } from '../types';
 import { StarRating } from '../components/StarRating';
-import { CalendarIcon, CheckCircleIcon, GuestIcon, HeartIcon, PhoneIcon, PriceIcon } from '../components/icons';
+import { CalendarIcon, CheckCircleIcon, GuestIcon, HeartIcon, LocationIcon, PhoneIcon, PriceIcon } from '../components/icons';
 
 interface DetailPageProps {
   hall: WeddingHall;
@@ -21,6 +21,10 @@ export const DetailPage: React.FC<DetailPageProps> = ({ hall, setView, toggleFav
   const prevImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex - 1 + hall.images.length) % hall.images.length);
   };
+
+  const gmapsEmbedUrl = `https://maps.google.com/maps?q=${hall.location.lat},${hall.location.lng}&hl=es;z=14&amp;output=embed`;
+  const gmapsDirectionsUrl = `https://www.google.com/maps/search/?api=1&query=${hall.location.lat},${hall.location.lng}`;
+
 
   return (
     <div className="bg-brand-light font-sans animate-fade-in">
@@ -75,7 +79,7 @@ export const DetailPage: React.FC<DetailPageProps> = ({ hall, setView, toggleFav
                 </div>
               ))}
             </div>
-
+            
             <h2 className="text-3xl font-serif font-bold text-brand-blue mb-6">Reviews</h2>
             <div className="space-y-6">
               {hall.reviews.map((review, index) => (
@@ -122,6 +126,32 @@ export const DetailPage: React.FC<DetailPageProps> = ({ hall, setView, toggleFav
                     <span>Call Hall</span>
                  </a>
               </div>
+
+               <div className="border-t pt-4 mt-4">
+                 <p className="text-lg font-semibold text-brand-dark mb-2">Location</p>
+                 <p className="text-sm text-gray-700 mb-4">{hall.address}</p>
+                 <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden mb-4">
+                    <iframe
+                        src={gmapsEmbedUrl}
+                        width="100%"
+                        height="200"
+                        style={{ border: 0 }}
+                        allowFullScreen={false}
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title={`Map of ${hall.name}`}
+                    ></iframe>
+                 </div>
+                 <a
+                    href={gmapsDirectionsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-brand-blue text-white font-bold py-2 px-4 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center space-x-2 text-sm"
+                 >
+                    <LocationIcon className="w-5 h-5"/>
+                    <span>Get Directions</span>
+                 </a>
+               </div>
             </div>
           </div>
         </div>

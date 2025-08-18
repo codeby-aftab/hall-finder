@@ -1,15 +1,17 @@
-
 import React from 'react';
-import type { View, SetView } from '../types';
-import { BackIcon, HeartIcon } from './icons';
+import type { View, SetView, User } from '../types';
+import { BackIcon, DefaultAvatarIcon, HeartIcon } from './icons';
 
 interface HeaderProps {
   setView: SetView;
   goBack: () => void;
   history: View[];
+  currentUser: User | null;
+  onLoginClick: () => void;
+  logout: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ setView, goBack, history }) => {
+export const Header: React.FC<HeaderProps> = ({ setView, goBack, history, currentUser, onLoginClick, logout }) => {
   return (
     <header className="bg-brand-light/80 backdrop-blur-md shadow-md sticky top-0 z-40">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,19 +37,42 @@ export const Header: React.FC<HeaderProps> = ({ setView, goBack, history }) => {
             </div>
           </div>
           <nav className="flex items-center space-x-4">
-             <button
-              onClick={() => setView('FAVORITES')}
-              className="p-2 rounded-full text-brand-maroon hover:bg-brand-maroon/10 transition-colors duration-300"
-              aria-label="Favorites"
-            >
-              <HeartIcon className="w-6 h-6" />
-            </button>
-            <button
-              onClick={() => setView('PROFILE')}
-              className="w-10 h-10 rounded-full bg-brand-gold text-white flex items-center justify-center font-bold text-lg font-sans"
-            >
-              U
-            </button>
+            {currentUser ? (
+              <>
+                <button
+                  onClick={() => setView('FAVORITES')}
+                  className="p-2 rounded-full text-brand-maroon hover:bg-brand-maroon/10 transition-colors duration-300"
+                  aria-label="Favorites"
+                >
+                  <HeartIcon className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={() => setView('PROFILE')}
+                  className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden border-2 border-brand-gold"
+                  aria-label="User profile"
+                >
+                  {currentUser.picture ? (
+                     <img src={currentUser.picture} alt={currentUser.name} className="w-full h-full object-cover" />
+                  ) : (
+                     <DefaultAvatarIcon className="w-8 h-8 text-gray-400" />
+                  )}
+                </button>
+                 <button
+                    onClick={logout}
+                    className="hidden sm:block text-sm font-semibold text-brand-blue hover:text-brand-maroon transition-colors"
+                    aria-label="Logout"
+                >
+                    Logout
+                </button>
+              </>
+            ) : (
+                <button
+                    onClick={onLoginClick}
+                    className="bg-brand-gold text-white font-bold py-2 px-5 rounded-full hover:opacity-90 transition-opacity text-sm"
+                >
+                    Login
+                </button>
+            )}
           </nav>
         </div>
       </div>

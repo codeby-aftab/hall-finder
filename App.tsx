@@ -1,7 +1,6 @@
-
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { MOCK_HALLS } from './constants';
-import type { View, WeddingHall, SetView } from './types';
+import type { View, WeddingHall, SetView, User } from './types';
 import { Header } from './components/Header';
 import { HomePage } from './pages/HomePage';
 import { ListingPage } from './pages/ListingPage';
@@ -9,32 +8,27 @@ import { DetailPage } from './pages/DetailPage';
 import { BookingPage } from './pages/BookingPage';
 import { FavoritesPage } from './pages/FavoritesPage';
 import { ProfilePage } from './pages/ProfilePage';
-
-const PlaceholderPage: React.FC<{ title: string }> = ({ title }) => (
-    <div className="min-h-[60vh] flex items-center justify-center bg-white">
-        <h1 className="text-4xl font-serif text-gray-400">{title} - Coming Soon</h1>
-    </div>
-);
-
+import { AuthPage } from './pages/AuthPage';
+import { SettingsPage } from './pages/SettingsPage';
 
 const App: React.FC = () => {
     const [history, setHistory] = useState<View[]>(['HOME']);
     const [selectedHall, setSelectedHall] = useState<WeddingHall | null>(null);
     const [filteredHalls, setFilteredHalls] = useState<WeddingHall[]>(MOCK_HALLS);
     const [listingTitle, setListingTitle] = useState('Search Results');
-    const [favorites, setFavorites] = useState<number[]>(() => {
-        // You can persist this to localStorage in a real app
-        return [1, 3];
-    });
+    const [favorites, setFavorites] = useState<number[]>(() => [1, 3]);
+    
+    // Local user management state
+    const [users, setUsers] = useState<User[]>([]);
+    const [currentUser, setCurrentUser] = useState<User | null>(null);
 
     const currentView = history[history.length - 1];
-
+    
     const setView: SetView = (view, options = {}) => {
         if (options.asRoot) {
             setHistory([view]);
             return;
         }
-        // Prevent pushing the same view consecutively
         if (currentView !== view) {
             setHistory(prev => [...prev, view]);
         }
@@ -45,8 +39,70 @@ const App: React.FC = () => {
             setHistory(prev => prev.slice(0, -1));
         }
     };
+    
+    const handleLogin = (email: string, password: string): boolean => {
+      const user = users.find(u => u.email === email && u.password === password);
+      if (user) {
+        setCurrentUser(user);
+        setView('HOME', { asRoot: true });
+        return true;
+      }
+      return false;
+    };
+    
+    const handleSignup = (name: string, email: string, password: string): boolean => {
+        if (users.some(u => u.email === email)) {
+            return false; // User already exists
+        }
+        const newUser: User = {
+            id: String(Date.now()),
+            name,
+            email,
+            password,
+            picture: "" // Start with no picture to show default avatar
+        };
+        setUsers(prev => [...prev, newUser]);
+        setCurrentUser(newUser);
+        setView('HOME', { asRoot: true });
+        return true;
+    };
+
+    const logout = () => {
+        setCurrentUser(null);
+        setFavorites([]);
+        setView('HOME', { asRoot: true });
+    };
+
+    const handleUpdateProfile = (data: { name?: string; picture?: string }): boolean => {
+        if (!currentUser) return false;
+        const updatedUser = { ...currentUser, ...data };
+        setCurrentUser(updatedUser);
+        setUsers(users.map(u => u.id === currentUser.id ? updatedUser : u));
+        return true;
+    };
+
+    const handleChangePassword = (currentPassword: string, newPassword: string): 'SUCCESS' | 'WRONG_PASSWORD' | 'NO_USER' => {
+        if (!currentUser) return 'NO_USER';
+        if (currentUser.password !== currentPassword) {
+            return 'WRONG_PASSWORD';
+        }
+        const updatedUser = { ...currentUser, password: newPassword };
+        setCurrentUser(updatedUser);
+        setUsers(users.map(u => u.id === currentUser.id ? updatedUser : u));
+        return 'SUCCESS';
+    };
+
+    const handleDeleteAccount = () => {
+        if (!currentUser) return;
+        setUsers(users.filter(u => u.id !== currentUser.id));
+        logout();
+    };
 
     const toggleFavorite = (id: number) => {
+        if(!currentUser) {
+            setView('AUTH');
+            return;
+        }
         setFavorites(prev => 
             prev.includes(id) ? prev.filter(favId => favId !== id) : [...prev, id]
         );
@@ -66,18 +122,48 @@ const App: React.FC = () => {
                 if (selectedHall) {
                     return <DetailPage hall={selectedHall} setView={setView} toggleFavorite={toggleFavorite} isFavorite={favorites.includes(selectedHall.id)} />;
                 }
-                setView('HOME', { asRoot: true }); // Fallback
+                setView('HOME', { asRoot: true });
                 return null;
+            case 'AUTH':
+                if (currentUser) {
+                    setView('HOME', { asRoot: true });
+                    return null;
+                }
+                return <AuthPage onLogin={handleLogin} onSignup={handleSignup} />;
             case 'BOOKING':
+                if (!currentUser) {
+                    setView('AUTH');
+                    return null;
+                }
                 if (selectedHall) {
                     return <BookingPage hall={selectedHall} setView={setView} />;
                 }
-                setView('HOME', { asRoot: true }); // Fallback
+                setView('HOME', { asRoot: true });
                 return null;
             case 'FAVORITES':
+                 if (!currentUser) {
+                    setView('AUTH');
+                    return null;
+                }
                 return <FavoritesPage favoriteHalls={favoriteHalls} setView={setView} setSelectedHall={setSelectedHall} />;
             case 'PROFILE':
-                return <ProfilePage setView={setView} setSelectedHall={setSelectedHall} allHalls={MOCK_HALLS} />;
+                 if (!currentUser) {
+                    setView('AUTH');
+                    return null;
+                }
+                return <ProfilePage currentUser={currentUser} setView={setView} setSelectedHall={setSelectedHall} allHalls={MOCK_HALLS} logout={logout} />;
+             case 'SETTINGS':
+                if (!currentUser) {
+                    setView('AUTH');
+                    return null;
+                }
+                return <SettingsPage 
+                    currentUser={currentUser} 
+                    setView={setView}
+                    onUpdateProfile={handleUpdateProfile}
+                    onChangePassword={handleChangePassword}
+                    onDeleteAccount={handleDeleteAccount}
+                />;
             default:
                 return <HomePage setView={setView} setSelectedHall={setSelectedHall} setFilteredHalls={setFilteredHalls} setListingTitle={setListingTitle} />;
         }
@@ -85,7 +171,7 @@ const App: React.FC = () => {
 
     return (
         <div className="bg-brand-light text-brand-dark min-h-screen">
-            <Header setView={setView} goBack={goBack} history={history} />
+            <Header setView={setView} goBack={goBack} history={history} currentUser={currentUser} onLoginClick={() => setView('AUTH')} logout={logout} />
             <main>
                 {renderView()}
             </main>

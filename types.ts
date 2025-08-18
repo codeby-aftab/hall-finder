@@ -10,6 +10,7 @@ export type VenueType = 'Palace' | 'Banquet' | 'Outdoor' | 'Marquee' | 'Destinat
 export interface WeddingHall {
   id: number;
   name: string;
+  address: string;
   area: string;
   city: string;
   venueType: VenueType;
@@ -37,7 +38,14 @@ export interface Booking {
     status: 'Confirmed' | 'Completed' | 'Cancelled';
 }
 
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  picture: string;
+  password?: string;
+}
 
-export type View = 'HOME' | 'LISTING' | 'DETAIL' | 'BOOKING' | 'FAVORITES' | 'PROFILE';
+export type View = 'HOME' | 'LISTING' | 'DETAIL' | 'BOOKING' | 'FAVORITES' | 'PROFILE' | 'AUTH' | 'SETTINGS';
 
 export type SetView = (view: View, options?: { asRoot?: boolean }) => void;

@@ -1,14 +1,16 @@
 
 import React, { useState } from 'react';
-import type { WeddingHall, SetView, Booking } from '../types';
+import type { WeddingHall, SetView, Booking, User } from '../types';
 import { MOCK_BOOKINGS } from '../constants';
-import { CalendarIcon } from '../components/icons';
+import { CalendarIcon, DefaultAvatarIcon } from '../components/icons';
 import { ReviewModal } from '../components/ReviewModal';
 
 interface ProfilePageProps {
   setView: SetView;
   setSelectedHall: (hall: WeddingHall) => void;
   allHalls: WeddingHall[];
+  currentUser: User;
+  logout: () => void;
 }
 
 const BookingCard: React.FC<{ 
@@ -66,7 +68,7 @@ const BookingCard: React.FC<{
 };
 
 
-export const ProfilePage: React.FC<ProfilePageProps> = ({ setView, setSelectedHall, allHalls }) => {
+export const ProfilePage: React.FC<ProfilePageProps> = ({ setView, setSelectedHall, allHalls, currentUser, logout }) => {
   const [reviewingHall, setReviewingHall] = useState<WeddingHall | null>(null);
 
   const handleOpenReviewModal = (hall: WeddingHall) => {
@@ -150,22 +152,26 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ setView, setSelectedHa
           <aside className="lg:col-span-1">
             <div className="sticky top-28 bg-white p-6 rounded-xl shadow-lg">
               <div className="flex flex-col items-center text-center">
-                 <div className="w-24 h-24 rounded-full bg-brand-gold text-white flex items-center justify-center font-bold text-4xl font-sans mb-4">
-                    U
+                 <div className="w-24 h-24 rounded-full mb-4 shadow-md bg-gray-200 flex items-center justify-center overflow-hidden">
+                    {currentUser.picture ? (
+                        <img src={currentUser.picture} alt={currentUser.name} className="w-full h-full object-cover" />
+                    ) : (
+                        <DefaultAvatarIcon className="w-20 h-20 text-gray-400" />
+                    )}
                  </div>
-                 <h3 className="text-2xl font-bold font-serif text-brand-blue">Uzair Khan</h3>
-                 <p className="text-gray-500">uzair.k@example.com</p>
+                 <h3 className="text-2xl font-bold font-serif text-brand-blue">{currentUser.name}</h3>
+                 <p className="text-gray-500">{currentUser.email}</p>
               </div>
               <div className="border-t my-6"></div>
               <div className="space-y-4">
-                <button className="w-full text-left font-semibold text-gray-700 hover:text-brand-maroon transition-colors">
-                    Edit Profile
-                </button>
-                <button className="w-full text-left font-semibold text-gray-700 hover:text-brand-maroon transition-colors">
-                    Account Settings
+                <button 
+                    onClick={() => setView('SETTINGS')}
+                    className="w-full text-left font-semibold text-gray-700 hover:text-brand-maroon transition-colors"
+                >
+                    Settings
                 </button>
                 <button 
-                    onClick={() => setView('HOME', {asRoot: true})}
+                    onClick={logout}
                     className="w-full text-left font-semibold text-red-600 hover:text-red-800 transition-colors"
                 >
                     Logout
